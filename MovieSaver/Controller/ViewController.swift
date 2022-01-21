@@ -6,16 +6,6 @@ protocol TransferMovieBetweenVCDelegate: AnyObject {
 
 final class ViewController: UIViewController {
     
-    // MARK: - Actions
-    // MARK: Private
-    @objc private func addNewButtonClick() {
-        let storyboard = UIStoryboard(name: "Main", bundle: nil)
-        if let addNewVC = storyboard.instantiateViewController(withIdentifier: "AddMovieViewController") as? AddMovieViewController {
-            addNewVC.delegate = self
-            navigationController?.pushViewController(addNewVC, animated: true)
-        }
-    }
-    
     // MARK: - Properties
     // MARK: Public
     public let mainTableView: UITableView =  UITableView()
@@ -55,6 +45,7 @@ final class ViewController: UIViewController {
         mainTableView.delegate = self
         mainTableView.dataSource = self
         mainTableView.separatorStyle = .none
+        mainTableView.backgroundColor = UIColor(red: 0.898, green: 0.898, blue: 0.898, alpha: 1)
     }
     
     private func addNavigationControllerUI() {
@@ -75,9 +66,8 @@ extension ViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if let cell = mainTableView.dequeueReusableCell(withIdentifier: "MovieInfoTableViewCell", for: indexPath) as? MovieInfoTableViewCell {
-            cell.movieImageView.image = moviesInfo[indexPath.row].imageMovie
-            cell.nameMovieLabel.text = moviesInfo[indexPath.row].name
-            cell.ratingMovieLabel.attributedText = ratingMovieInfo(indexPath)
+            let movie = moviesInfo[indexPath.row]
+            cell.setInfoMovie(NameMovie: movie.name, RatingMovie: ratingMovieInfo(indexPath), ImageMovie: movie.imageMovie)
             return cell
         }
         return UITableViewCell()
@@ -86,9 +76,18 @@ extension ViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         if let detailScreenVC = storyboard.instantiateViewController(withIdentifier: "DetailScreenViewController") as? DetailScreenViewController {
-            detailScreenVC.modalPresentationStyle = .formSheet
             detailScreenVC.movieInfo = moviesInfo[indexPath.item]
             navigationController?.pushViewController(detailScreenVC, animated: true)
+        }
+    }
+    
+    // MARK: - Actions
+    // MARK: Private
+    @objc private func addNewButtonClick() {
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        if let addNewVC = storyboard.instantiateViewController(withIdentifier: "AddMovieViewController") as? AddMovieViewController {
+            addNewVC.delegate = self
+            navigationController?.pushViewController(addNewVC, animated: true)
         }
     }
     

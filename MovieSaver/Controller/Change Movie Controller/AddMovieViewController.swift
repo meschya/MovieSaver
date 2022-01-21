@@ -8,67 +8,16 @@ protocol TransferDataBetweenVCDelegate: AnyObject {
 }
 
 final class AddMovieViewController: UIViewController {
-    // MARK: - Actions
-    // MARK: Private
-    @objc private func saveButtonClick() {
-        if mainNameLabel.text != "-" && mainDateLabel.text != "-" && mainRatingLabel.text != "-" && mainYoutubeLabel.text != "-" && descriptionTextView.text != "-" && movieImageView.image != UIImage(named: "Rectangle") {
-            movieInfo.name = mainNameLabel.text!
-            movieInfo.rating = mainRatingLabel.text!
-            movieInfo.releaseDate = mainDateLabel.text!
-            movieInfo.youtubeLink = URL(string: mainYoutubeLabel.text!)!
-            movieInfo.description = descriptionTextView.text!
-            movieInfo.imageMovie = movieImageView.image!
-            delegate?.transferMovieInfo(movieInfo)
-            navigationController?.popViewController(animated: true)
-        } else {
-            showAllert("Fill in all fields")
-        }
-    }
-    
-    @objc private func nameClickButton() {
-        let storyboard = UIStoryboard(name: "Main", bundle: nil)
-        if let fillNameVC = storyboard.instantiateViewController(withIdentifier: "FilmNameViewController") as? FilmNameViewController {
-            fillNameVC.delegate = self
-            navigationController?.pushViewController(fillNameVC, animated: true)
-        } else {
-            showAllert("Unknown error")
-        }
-    }
-    @objc private func ratingClickButton() {
-        let storyboard = UIStoryboard(name: "Main", bundle: nil)
-        if let pickerVC = storyboard.instantiateViewController(withIdentifier: "PickerViewController") as? PickerViewController {
-            navigationController?.pushViewController(pickerVC, animated: true)
-            pickerVC.delegate = self
-        } else {
-            showAllert("Unknown error")
-        }
-    }
-    
-    @objc private func dateClickButton() {
-        let storyboard = UIStoryboard(name: "Main", bundle: nil)
-        if let datePickerVC = storyboard.instantiateViewController(withIdentifier: "DatePickerViewController") as? DatePickerViewController {
-            datePickerVC.delegate = self
-            navigationController?.pushViewController(datePickerVC, animated: true)
-        } else {
-            showAllert("Unknown error")
-        }
-    }
-      
-    @objc private func youTubeClickButton() {
-        let storyboard = UIStoryboard(name: "Main", bundle: nil)
-        if let youTubeVC = storyboard.instantiateViewController(withIdentifier: "YouTubeLinkViewController") as? YouTubeLinkViewController {
-            navigationController?.pushViewController(youTubeVC, animated: true)
-            youTubeVC.delegate = self
-        } else {
-            showAllert("Unknown error")
-        }
-    }
     
     // MARK: - Properties
     // MARK: Public
     weak var delegate: TransferMovieBetweenVCDelegate?
     // MARK: Private
     private var movieInfo: MovieInfo = MovieInfo()
+    private var pickedImage: UIImage? 
+    private let scrollView: UIScrollView = UIScrollView()
+    private let mainView: UIView =  UIView()
+    
     private let movieImageView: UIImageView = UIImageView()
     private let infoView: UIView = UIView()
     private let infoMovieStackView: UIStackView = UIStackView()
@@ -103,7 +52,7 @@ final class AddMovieViewController: UIViewController {
     private let descriptionLabel: UILabel = UILabel()
     private let descriptionTextView: UITextView = UITextView()
 
-    //MARK: - LIfecycle
+    // MARK: - LIfecycle
     override func viewDidLoad() {
         super.viewDidLoad()
         addSubviews()
@@ -120,6 +69,8 @@ final class AddMovieViewController: UIViewController {
     // MARK: - Constraints
     // MARK: Private
     private func addConstraints() {
+        addScrollViewConstraint()
+        addMainViewConstraint()
         addMovieImageViewConstraint()
         addInfoViewConstraint()
         addInfoMovieStackViewConstraint()
@@ -127,20 +78,38 @@ final class AddMovieViewController: UIViewController {
         addDescriptionLabelConstarint()
     }
     
+    private func addScrollViewConstraint() {
+        scrollView.translatesAutoresizingMaskIntoConstraints = false
+        scrollView.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
+        scrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
+        scrollView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
+        scrollView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
+    }
+    
+    private func addMainViewConstraint() {
+        mainView.translatesAutoresizingMaskIntoConstraints = false
+        mainView.topAnchor.constraint(equalTo: scrollView.topAnchor).isActive = true
+        mainView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor).isActive = true
+        mainView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor).isActive = true
+        mainView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor).isActive = true
+        mainView.widthAnchor.constraint(equalTo: scrollView.widthAnchor, multiplier: 1).isActive = true
+        mainView.heightAnchor.constraint(equalToConstant: 730).isActive = true
+    }
+    
     private func addMovieImageViewConstraint() {
         movieImageView.translatesAutoresizingMaskIntoConstraints = false
-        movieImageView.bottomAnchor.constraint(equalTo: infoView.topAnchor, constant: -30).isActive = true
-        movieImageView.heightAnchor.constraint(equalToConstant: 100).isActive = true
-        movieImageView.widthAnchor.constraint(equalToConstant: 100).isActive = true
+        movieImageView.topAnchor.constraint(equalTo: mainView.safeAreaLayoutGuide.topAnchor, constant: 35).isActive = true
+        movieImageView.heightAnchor.constraint(equalToConstant: 150).isActive = true
+        movieImageView.widthAnchor.constraint(equalToConstant: 150).isActive = true
         movieImageView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
     }
     
     private func addInfoViewConstraint() {
         infoView.translatesAutoresizingMaskIntoConstraints = false
         infoView.heightAnchor.constraint(equalToConstant: 200).isActive = true
-        infoView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 32).isActive = true
-        infoView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -32).isActive = true
-        infoView.centerYAnchor.constraint(equalTo: view.centerYAnchor, constant: 20).isActive = true
+        infoView.topAnchor.constraint(equalTo: movieImageView.bottomAnchor, constant: 32).isActive = true
+        infoView.leadingAnchor.constraint(equalTo: mainView.leadingAnchor, constant: 32).isActive = true
+        infoView.trailingAnchor.constraint(equalTo: mainView.trailingAnchor, constant: -32).isActive = true
     }
     
     private func addInfoMovieStackViewConstraint() {
@@ -151,26 +120,28 @@ final class AddMovieViewController: UIViewController {
         infoMovieStackView.bottomAnchor.constraint(equalTo: infoView.bottomAnchor).isActive = true
     }
     
-    private func addDescriptionTextViewConstraint() {
-        descriptionTextView.translatesAutoresizingMaskIntoConstraints = false
-        descriptionTextView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -30).isActive = true
-        descriptionTextView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 32).isActive = true
-        descriptionTextView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -32).isActive = true
-        descriptionTextView.heightAnchor.constraint(equalToConstant: 120).isActive = true
-    }
-    
     private func addDescriptionLabelConstarint() {
         descriptionLabel.translatesAutoresizingMaskIntoConstraints = false
-        descriptionLabel.bottomAnchor.constraint(equalTo: descriptionTextView.topAnchor, constant: -11).isActive = true
-        descriptionLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 32).isActive = true
-        descriptionLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -32).isActive = true
+        descriptionLabel.topAnchor.constraint(equalTo: infoView.bottomAnchor, constant: 36).isActive = true
+        descriptionLabel.leadingAnchor.constraint(equalTo: mainView.leadingAnchor, constant: 32).isActive = true
+        descriptionLabel.trailingAnchor.constraint(equalTo: mainView.trailingAnchor, constant: -32).isActive = true
         descriptionLabel.heightAnchor.constraint(equalToConstant: 20).isActive = true
+    }
+    
+    private func addDescriptionTextViewConstraint() {
+        descriptionTextView.translatesAutoresizingMaskIntoConstraints = false
+        descriptionTextView.topAnchor.constraint(equalTo: descriptionLabel.bottomAnchor, constant: 11).isActive = true
+        descriptionTextView.leadingAnchor.constraint(equalTo: mainView.leadingAnchor, constant: 32).isActive = true
+        descriptionTextView.trailingAnchor.constraint(equalTo: mainView.trailingAnchor, constant: -32).isActive = true
+        descriptionTextView.bottomAnchor.constraint(equalTo: mainView.bottomAnchor, constant: -20).isActive = true
     }
     
     // MARK: - Setups
     // MARK: Private
     private func addSubviews() {
-        view.addSubViews(movieImageView, infoView, descriptionLabel, descriptionTextView)
+        view.addSubview(scrollView)
+        scrollView.addSubViews(mainView)
+        mainView.addSubViews(movieImageView, infoView, descriptionLabel, descriptionTextView)
         infoView.addSubview(infoMovieStackView)
         
         infoMovieStackView.addArrangedSubview(firstStackView)
@@ -300,28 +271,28 @@ final class AddMovieViewController: UIViewController {
     private func addNameLabelUI() {
         nameLabel.text = "Name"
         nameLabel.textColor = .black
-        nameLabel.font = UIFont.systemFont(ofSize: 18, weight: .medium)
+        nameLabel.font = .manrope(18, .medium)
         nameLabel.textAlignment = .center
     }
     
     private func addRatingLabelUI() {
         ratingLabel.text = "Your Rating"
         ratingLabel.textColor = .black
-        ratingLabel.font = UIFont.systemFont(ofSize: 18, weight: .medium)
+        ratingLabel.font = .manrope(18, .medium)
         ratingLabel.textAlignment = .center
     }
     
     private func addMainNameLabelUI() {
         mainNameLabel.text = "-"
         mainNameLabel.textColor = .black
-        mainNameLabel.font = UIFont.systemFont(ofSize: 18, weight: .medium)
+        mainNameLabel.font = .manrope(18, .medium)
         mainNameLabel.textAlignment = .center
     }
     
     private func addMainRatingLabelUI() {
         mainRatingLabel.text = "-"
         mainRatingLabel.textColor = .black
-        mainRatingLabel.font = UIFont.systemFont(ofSize: 18, weight: .medium)
+        mainRatingLabel.font = .manrope(18, .medium)
         mainRatingLabel.textAlignment = .center
     }
     
@@ -329,7 +300,7 @@ final class AddMovieViewController: UIViewController {
         changeNameButton.setTitle("Change", for: .normal)
         changeNameButton.backgroundColor = .white
         changeNameButton.setTitleColor(.systemBlue, for: .normal)
-        changeNameButton.titleLabel?.font = UIFont.systemFont(ofSize: 18, weight: .medium)
+        changeNameButton.titleLabel?.font = .manrope(18, .medium)
         changeNameButton.addTarget(self, action: #selector(nameClickButton), for: .touchUpInside)
     }
     
@@ -337,35 +308,35 @@ final class AddMovieViewController: UIViewController {
         changeRatingButton.setTitle("Change", for: .normal)
         changeRatingButton.backgroundColor = .white
         changeRatingButton.setTitleColor(.systemBlue, for: .normal)
-        changeRatingButton.titleLabel?.font = UIFont.systemFont(ofSize: 18, weight: .medium)
+        changeRatingButton.titleLabel?.font = .manrope(18, .medium)
         changeRatingButton.addTarget(self, action: #selector(ratingClickButton), for: .touchUpInside)
     }
 
     private func addDateLabelUI() {
         dateLabel.text = "Release Date"
         dateLabel.textColor = .black
-        dateLabel.font = UIFont.systemFont(ofSize: 18, weight: .medium)
+        dateLabel.font = .manrope(18, .medium)
         dateLabel.textAlignment = .center
     }
     
     private func addYoutubeLabelUI() {
         youtubeLabel.text = "YouTube Link"
         youtubeLabel.textColor = .black
-        youtubeLabel.font = UIFont.systemFont(ofSize: 18, weight: .medium)
+        youtubeLabel.font = .manrope(18, .medium)
         youtubeLabel.textAlignment = .center
     }
     
     private func addMainDateLabelUI() {
         mainDateLabel.text = "-"
         mainDateLabel.textColor = .black
-        mainDateLabel.font = UIFont.systemFont(ofSize: 18, weight: .medium)
+        mainDateLabel.font = .manrope(18, .medium)
         mainDateLabel.textAlignment = .center
     }
     
     private func addMainYoutubeLabelUI() {
         mainYoutubeLabel.text = "-"
         mainYoutubeLabel.textColor = .black
-        mainYoutubeLabel.font = UIFont.systemFont(ofSize: 18, weight: .medium)
+        mainYoutubeLabel.font = .manrope(18, .medium)
         mainYoutubeLabel.textAlignment = .center
     }
     
@@ -373,7 +344,7 @@ final class AddMovieViewController: UIViewController {
         changeDateButton.setTitle("Change", for: .normal)
         changeDateButton.backgroundColor = .white
         changeDateButton.setTitleColor(.systemBlue, for: .normal)
-        changeDateButton.titleLabel?.font = UIFont.systemFont(ofSize: 18, weight: .medium)
+        changeDateButton.titleLabel?.font = .manrope(18, .medium)
         changeDateButton.addTarget(self, action: #selector(dateClickButton), for: .touchUpInside)
     }
     
@@ -381,7 +352,7 @@ final class AddMovieViewController: UIViewController {
         changeYoutubeButton.setTitle("Change", for: .normal)
         changeYoutubeButton.backgroundColor = .white
         changeYoutubeButton.setTitleColor(.systemBlue, for: .normal)
-        changeYoutubeButton.titleLabel?.font = UIFont.systemFont(ofSize: 18, weight: .medium)
+        changeYoutubeButton.titleLabel?.font = .manrope(18, .medium)
         changeYoutubeButton.addTarget(self, action: #selector(youTubeClickButton), for: .touchUpInside)
     }
     
@@ -389,22 +360,76 @@ final class AddMovieViewController: UIViewController {
         descriptionLabel.text = "Description"
         descriptionLabel.textColor = .black
         descriptionLabel.textAlignment = .center
-        descriptionLabel.font = UIFont.systemFont(ofSize: 18, weight: .medium)
+        descriptionLabel.font = .manrope(18, .medium)
     }
     
     private func addDescriptionTextFieldUI() {
-        descriptionTextView.layer.borderColor = UIColor.black.cgColor
-        descriptionTextView.layer.borderWidth = 1
-        descriptionTextView.layer.borderColor = UIColor.opaqueSeparator.cgColor
-        descriptionTextView.layer.cornerRadius = 10
-        descriptionTextView.textColor = .black
-        descriptionTextView.font = UIFont.systemFont(ofSize: 18, weight: .light)
+        descriptionTextView.textColor = .lightGray
+        descriptionTextView.text = "Enter a movie description"
+        descriptionTextView.font = .manrope(14, .regular)
+        descriptionTextView.delegate = self
     }
     
     private func addNavigationControllerUI() {
         title = "Add new"
         navigationController?.navigationBar.prefersLargeTitles = true
         navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Save", style: .plain, target: self, action: #selector(saveButtonClick))
+    }
+    
+    // MARK: - Actions
+    // MARK: Private
+    @objc private func saveButtonClick() {
+        if mainNameLabel.text != "-" && mainDateLabel.text != "-" && mainRatingLabel.text != "-" && mainYoutubeLabel.text != "-" && descriptionTextView.text != "-" && pickedImage != nil && descriptionTextView.textColor != UIColor.lightGray {
+            movieInfo.name = mainNameLabel.text!
+            movieInfo.rating = mainRatingLabel.text!
+            movieInfo.releaseDate = mainDateLabel.text!
+            movieInfo.youtubeLink = URL(string: mainYoutubeLabel.text!)!
+            movieInfo.description = descriptionTextView.text!
+            movieInfo.imageMovie = pickedImage!
+            delegate?.transferMovieInfo(movieInfo)
+            navigationController?.popViewController(animated: true)
+        } else {
+            showAllert("Fill in all fields")
+        }
+    }
+    
+    @objc private func nameClickButton() {
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        if let fillNameVC = storyboard.instantiateViewController(withIdentifier: "FilmNameViewController") as? FilmNameViewController {
+            fillNameVC.delegate = self
+            navigationController?.pushViewController(fillNameVC, animated: true)
+        } else {
+            showAllert("Unknown error")
+        }
+    }
+    @objc private func ratingClickButton() {
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        if let pickerVC = storyboard.instantiateViewController(withIdentifier: "PickerViewController") as? PickerViewController {
+            navigationController?.pushViewController(pickerVC, animated: true)
+            pickerVC.delegate = self
+        } else {
+            showAllert("Unknown error")
+        }
+    }
+    
+    @objc private func dateClickButton() {
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        if let datePickerVC = storyboard.instantiateViewController(withIdentifier: "DatePickerViewController") as? DatePickerViewController {
+            datePickerVC.delegate = self
+            navigationController?.pushViewController(datePickerVC, animated: true)
+        } else {
+            showAllert("Unknown error")
+        }
+    }
+      
+    @objc private func youTubeClickButton() {
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        if let youTubeVC = storyboard.instantiateViewController(withIdentifier: "YouTubeLinkViewController") as? YouTubeLinkViewController {
+            navigationController?.pushViewController(youTubeVC, animated: true)
+            youTubeVC.delegate = self
+        } else {
+            showAllert("Unknown error")
+        }
     }
     
     // MARK: - Helpers
@@ -423,10 +448,8 @@ extension AddMovieViewController: TransferDataBetweenVCDelegate {
     
     func transferMovieDate(_ date: Date) {
         let dateformatter = DateFormatter()
-        //dateformatter.dateFormat = "dd MMMM yyyy"
         dateformatter.dateFormat = "yyyy"
         mainDateLabel.text = dateformatter.string(from: date)
-        
     }
     
     func transferMovieYouTube(_ url: URL) {
@@ -438,21 +461,37 @@ extension AddMovieViewController: TransferDataBetweenVCDelegate {
     }
 }
 
+extension AddMovieViewController: UITextViewDelegate {
+    func textViewDidBeginEditing(_ textView: UITextView) {
+        if descriptionTextView.textColor == UIColor.lightGray {
+            descriptionTextView.text = nil
+            descriptionTextView.textColor = UIColor.black
+        }
+    }
+    
+    func textViewDidEndEditing(_ textView: UITextView) {
+        if descriptionTextView.text.isEmpty {
+            descriptionTextView.text = "Enter a movie description"
+            descriptionTextView.textColor = UIColor.lightGray
+        }
+    }
+}
+
 extension AddMovieViewController: UIImagePickerControllerDelegate & UINavigationControllerDelegate {
     
     @objc private func imagePickerBtnAction() {
-            let alert = UIAlertController(title: "Choose Image", message: nil, preferredStyle: .actionSheet)
-            alert.addAction(UIAlertAction(title: "Camera", style: .default, handler: { _ in
-                self.openCamera()
-            }))
+        let alert = UIAlertController(title: "Choose Image", message: nil, preferredStyle: .actionSheet)
+        alert.addAction(UIAlertAction(title: "Camera", style: .default, handler: { _ in
+            self.openCamera()
+        }))
 
-            alert.addAction(UIAlertAction(title: "Gallery", style: .default, handler: { _ in
-                self.openGallery()
-            }))
+        alert.addAction(UIAlertAction(title: "Gallery", style: .default, handler: { _ in
+            self.openGallery()
+        }))
 
-            alert.addAction(UIAlertAction.init(title: "Cancel", style: .cancel, handler: nil))
+        alert.addAction(UIAlertAction.init(title: "Cancel", style: .cancel, handler: nil))
 
-            self.present(alert, animated: true, completion: nil)
+        self.present(alert, animated: true, completion: nil)
         }
     
     private func openCamera() {
@@ -488,10 +527,12 @@ extension AddMovieViewController: UIImagePickerControllerDelegate & UINavigation
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         picker.dismiss(animated: true, completion: nil)
         if let image = info[.editedImage] as? UIImage {
-            movieImageView.image = image
+            pickedImage = image
+            movieImageView.image = pickedImage
         }
         if let image = info[UIImagePickerController.InfoKey.originalImage] as? UIImage {
-            movieImageView.image = image
+            pickedImage = image
+            movieImageView.image = pickedImage
         }
     }
 }

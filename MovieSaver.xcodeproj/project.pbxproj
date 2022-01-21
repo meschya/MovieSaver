@@ -7,6 +7,15 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		BF2B6F8E2796280A00A3C39F /* Manrope-ExtraBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = BF2B6F872796280A00A3C39F /* Manrope-ExtraBold.ttf */; };
+		BF2B6F8F2796280A00A3C39F /* Manrope-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = BF2B6F882796280A00A3C39F /* Manrope-Medium.ttf */; };
+		BF2B6F902796280A00A3C39F /* Manrope-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = BF2B6F892796280A00A3C39F /* Manrope-Light.ttf */; };
+		BF2B6F912796280A00A3C39F /* Manrope-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = BF2B6F8A2796280A00A3C39F /* Manrope-Regular.ttf */; };
+		BF2B6F922796280A00A3C39F /* Manrope-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = BF2B6F8B2796280A00A3C39F /* Manrope-SemiBold.ttf */; };
+		BF2B6F932796280A00A3C39F /* Manrope-ExtraLight.ttf in Resources */ = {isa = PBXBuildFile; fileRef = BF2B6F8C2796280A00A3C39F /* Manrope-ExtraLight.ttf */; };
+		BF2B6F942796280A00A3C39F /* Manrope-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = BF2B6F8D2796280A00A3C39F /* Manrope-Bold.ttf */; };
+		BF2B6F9827962DEF00A3C39F /* SetupWeightFonts.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF2B6F9727962DEF00A3C39F /* SetupWeightFonts.swift */; };
+		BF2B6F9A27962E1200A3C39F /* UIFont+.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF2B6F9927962E1200A3C39F /* UIFont+.swift */; };
 		BF2D6B9E277C75510054E30A /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF2D6B9D277C75510054E30A /* AppDelegate.swift */; };
 		BF2D6BA0277C75510054E30A /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF2D6B9F277C75510054E30A /* SceneDelegate.swift */; };
 		BF2D6BA2277C75510054E30A /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF2D6BA1277C75510054E30A /* ViewController.swift */; };
@@ -23,11 +32,19 @@
 		BFFA7BC32783291F00DEE1A8 /* FilmNameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFFA7BC22783291F00DEE1A8 /* FilmNameViewController.swift */; };
 		BFFE2DFB27833CAC00520281 /* UITextField+.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFFE2DFA27833CAC00520281 /* UITextField+.swift */; };
 		BFFE2DFD27833F1B00520281 /* YouTubeLinkViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFFE2DFC27833F1B00520281 /* YouTubeLinkViewController.swift */; };
-		BFFE2DFF2784747400520281 /* String+.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFFE2DFE2784747400520281 /* String+.swift */; };
 		BFFE2E01278481AA00520281 /* DetailScreenViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFFE2E00278481AA00520281 /* DetailScreenViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		BF2B6F872796280A00A3C39F /* Manrope-ExtraBold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Manrope-ExtraBold.ttf"; sourceTree = "<group>"; };
+		BF2B6F882796280A00A3C39F /* Manrope-Medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Manrope-Medium.ttf"; sourceTree = "<group>"; };
+		BF2B6F892796280A00A3C39F /* Manrope-Light.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Manrope-Light.ttf"; sourceTree = "<group>"; };
+		BF2B6F8A2796280A00A3C39F /* Manrope-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Manrope-Regular.ttf"; sourceTree = "<group>"; };
+		BF2B6F8B2796280A00A3C39F /* Manrope-SemiBold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Manrope-SemiBold.ttf"; sourceTree = "<group>"; };
+		BF2B6F8C2796280A00A3C39F /* Manrope-ExtraLight.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Manrope-ExtraLight.ttf"; sourceTree = "<group>"; };
+		BF2B6F8D2796280A00A3C39F /* Manrope-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Manrope-Bold.ttf"; sourceTree = "<group>"; };
+		BF2B6F9727962DEF00A3C39F /* SetupWeightFonts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetupWeightFonts.swift; sourceTree = "<group>"; };
+		BF2B6F9927962E1200A3C39F /* UIFont+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIFont+.swift"; sourceTree = "<group>"; };
 		BF2D6B9A277C75510054E30A /* MovieSaver.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MovieSaver.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		BF2D6B9D277C75510054E30A /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		BF2D6B9F277C75510054E30A /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -46,7 +63,6 @@
 		BFFA7BC22783291F00DEE1A8 /* FilmNameViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilmNameViewController.swift; sourceTree = "<group>"; };
 		BFFE2DFA27833CAC00520281 /* UITextField+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITextField+.swift"; sourceTree = "<group>"; };
 		BFFE2DFC27833F1B00520281 /* YouTubeLinkViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YouTubeLinkViewController.swift; sourceTree = "<group>"; };
-		BFFE2DFE2784747400520281 /* String+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+.swift"; sourceTree = "<group>"; };
 		BFFE2E00278481AA00520281 /* DetailScreenViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailScreenViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -61,6 +77,29 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		BF2B6F862796275D00A3C39F /* Fonts */ = {
+			isa = PBXGroup;
+			children = (
+				BF2B6F9627962DCA00A3C39F /* Setup Fonts */,
+				BF2B6F8D2796280A00A3C39F /* Manrope-Bold.ttf */,
+				BF2B6F872796280A00A3C39F /* Manrope-ExtraBold.ttf */,
+				BF2B6F8C2796280A00A3C39F /* Manrope-ExtraLight.ttf */,
+				BF2B6F892796280A00A3C39F /* Manrope-Light.ttf */,
+				BF2B6F882796280A00A3C39F /* Manrope-Medium.ttf */,
+				BF2B6F8A2796280A00A3C39F /* Manrope-Regular.ttf */,
+				BF2B6F8B2796280A00A3C39F /* Manrope-SemiBold.ttf */,
+			);
+			path = Fonts;
+			sourceTree = "<group>";
+		};
+		BF2B6F9627962DCA00A3C39F /* Setup Fonts */ = {
+			isa = PBXGroup;
+			children = (
+				BF2B6F9727962DEF00A3C39F /* SetupWeightFonts.swift */,
+			);
+			path = "Setup Fonts";
+			sourceTree = "<group>";
+		};
 		BF2D6B91277C75510054E30A = {
 			isa = PBXGroup;
 			children = (
@@ -80,6 +119,7 @@
 		BF2D6B9C277C75510054E30A /* MovieSaver */ = {
 			isa = PBXGroup;
 			children = (
+				BF2B6F862796275D00A3C39F /* Fonts */,
 				BF2D6BB4277C81E80054E30A /* Model */,
 				BF2D6BB2277C81DB0054E30A /* View */,
 				BF2D6BB1277C81D30054E30A /* Controller */,
@@ -170,7 +210,7 @@
 			children = (
 				BF2D6BC0277C91010054E30A /* UIView+.swift */,
 				BFFE2DFA27833CAC00520281 /* UITextField+.swift */,
-				BFFE2DFE2784747400520281 /* String+.swift */,
+				BF2B6F9927962E1200A3C39F /* UIFont+.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -233,10 +273,17 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BF2B6F912796280A00A3C39F /* Manrope-Regular.ttf in Resources */,
+				BF2B6F8F2796280A00A3C39F /* Manrope-Medium.ttf in Resources */,
+				BF2B6F8E2796280A00A3C39F /* Manrope-ExtraBold.ttf in Resources */,
+				BF2B6F902796280A00A3C39F /* Manrope-Light.ttf in Resources */,
+				BF2B6F922796280A00A3C39F /* Manrope-SemiBold.ttf in Resources */,
 				BF2D6BAA277C75520054E30A /* LaunchScreen.storyboard in Resources */,
 				BF2D6BA7277C75520054E30A /* Assets.xcassets in Resources */,
 				BF2D6BBB277C884B0054E30A /* MovieInfoTableViewCell.xib in Resources */,
 				BF2D6BA5277C75510054E30A /* Main.storyboard in Resources */,
+				BF2B6F932796280A00A3C39F /* Manrope-ExtraLight.ttf in Resources */,
+				BF2B6F942796280A00A3C39F /* Manrope-Bold.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -247,6 +294,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BF2B6F9827962DEF00A3C39F /* SetupWeightFonts.swift in Sources */,
 				BFFE2E01278481AA00520281 /* DetailScreenViewController.swift in Sources */,
 				BF2D6BC1277C91010054E30A /* UIView+.swift in Sources */,
 				BFFA7BC32783291F00DEE1A8 /* FilmNameViewController.swift in Sources */,
@@ -254,11 +302,11 @@
 				BF2D6BA2277C75510054E30A /* ViewController.swift in Sources */,
 				BFFE2DFD27833F1B00520281 /* YouTubeLinkViewController.swift in Sources */,
 				BFFA7BBD27821F4700DEE1A8 /* PickerViewController.swift in Sources */,
+				BF2B6F9A27962E1200A3C39F /* UIFont+.swift in Sources */,
 				BF2D6BC3277CB5290054E30A /* AddMovieViewController.swift in Sources */,
 				BFFA7BB727820BA700DEE1A8 /* DatePickerViewController.swift in Sources */,
 				BF2D6B9E277C75510054E30A /* AppDelegate.swift in Sources */,
 				BF2D6BB6277C85220054E30A /* MovieInfo.swift in Sources */,
-				BFFE2DFF2784747400520281 /* String+.swift in Sources */,
 				BF2D6BA0277C75510054E30A /* SceneDelegate.swift in Sources */,
 				BFFE2DFB27833CAC00520281 /* UITextField+.swift in Sources */,
 			);

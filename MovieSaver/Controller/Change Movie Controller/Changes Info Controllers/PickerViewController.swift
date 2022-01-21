@@ -2,17 +2,6 @@ import UIKit
 
 final class PickerViewController: UIViewController {
     
-    // MARK: - Actions
-    // MARK: Private
-    @objc private func saveButtonClick() {
-        if rating != nil {
-            delegate?.transferMovieRating(rating!)
-            navigationController?.popViewController(animated: true)
-        } else {
-            showAllert("Select rating movie!")
-        }
-    }
-    
     // MARK: - Properties
     // MARK: Public
     weak var delegate: TransferDataBetweenVCDelegate?
@@ -29,9 +18,7 @@ final class PickerViewController: UIViewController {
         addSubviews()
         addConstraints()
         addSetupsUI()
-        pickerView.delegate = self
-        pickerView.dataSource = self
-        arrayPickerView = fillArray()
+        setupPicker()
     }
     
     // MARK: - Constraints
@@ -76,32 +63,48 @@ final class PickerViewController: UIViewController {
         addSaveButtonUI()
     }
     
+    private func setupPicker() {
+        pickerView.delegate = self
+        pickerView.dataSource = self
+        arrayPickerView = fillArray()
+    }
+    
     private func addYourRatingLabelUI() {
         yourRatingLabel.text = "Your Rating"
         yourRatingLabel.textColor = .black
         yourRatingLabel.textAlignment = .center
-        yourRatingLabel.font = UIFont.systemFont(ofSize: 24, weight: .medium)
+        yourRatingLabel.font = .manrope(24, .medium)
     }
     
     private func addSaveButtonUI() {
         saveButton.setTitle("Save", for: .normal)
         saveButton.backgroundColor = .white
         saveButton.setTitleColor(.systemBlue, for: .normal)
-        saveButton.titleLabel?.font = UIFont.systemFont(ofSize: 18, weight: .medium)
+        saveButton.titleLabel?.font = .manrope(18, .medium)
         saveButton.addTarget(self, action: #selector(saveButtonClick), for: .touchUpInside)
+    }
+    
+    // MARK: - Actions
+    // MARK: Private
+    @objc private func saveButtonClick() {
+        if rating != nil {
+            delegate?.transferMovieRating(rating!)
+            navigationController?.popViewController(animated: true)
+        } else {
+            showAllert("Select rating movie!")
+        }
     }
     
     // MARK: - Helpers
     // MARK: Private
-    
     private func fillArray() -> [Double] {
-        var array: [Double] = []
-        var index: Double = 0
-        for _ in 1...99 {
-            index += 0.1
-            array.append(Double(round(10 * index) / 10))
-        }
-        return array
+        return Array(stride(from: 0.0, to: 10.1, by: 0.1)).reversed()
+    }
+    
+    private func showAllert(_ msg: String) {
+        let alert = UIAlertController(title: "Error", message: msg, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+        present(alert, animated: true, completion: nil)
     }
 }
 
@@ -115,18 +118,10 @@ extension PickerViewController: UIPickerViewDelegate, UIPickerViewDataSource {
     }
     
     func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
-        return String(arrayPickerView[row])
+        return String(format: "%.1f", arrayPickerView[row])
     }
     
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
-        rating = String(arrayPickerView[row])
-    }
-    
-    // MARK: - Helpers
-    // MARK: Private
-    private func showAllert(_ msg: String) {
-        let alert = UIAlertController(title: "Error", message: msg, preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
-        present(alert, animated: true, completion: nil)
+        rating = String(format: "%.1f", arrayPickerView[row])
     }
 }

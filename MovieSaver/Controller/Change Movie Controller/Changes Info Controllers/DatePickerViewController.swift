@@ -2,13 +2,6 @@ import UIKit
 
 final class DatePickerViewController: UIViewController {
     
-    // MARK: - Actions
-    // MARK: Private
-    @objc private func saveButtonClick() {
-        delegate?.transferMovieDate(datePicker.date)
-        navigationController?.popViewController(animated: true)
-    }
-    
     // MARK: - Properties
     // MARK: Public
     weak var delegate: TransferDataBetweenVCDelegate?    
@@ -73,7 +66,7 @@ final class DatePickerViewController: UIViewController {
         releaseDateLabel.text = "Release Date"
         releaseDateLabel.textColor = .black
         releaseDateLabel.textAlignment = .center
-        releaseDateLabel.font = UIFont.systemFont(ofSize: 24, weight: .medium)
+        releaseDateLabel.font = .manrope(24, .medium)
     }
     
     private func addDatePickerUI() {
@@ -85,7 +78,14 @@ final class DatePickerViewController: UIViewController {
         saveButton.setTitle("Save", for: .normal)
         saveButton.backgroundColor = .white
         saveButton.setTitleColor(.systemBlue, for: .normal)
-        saveButton.titleLabel?.font = UIFont.systemFont(ofSize: 18, weight: .medium)
+        saveButton.titleLabel?.font = .manrope(18, .medium)
         saveButton.addTarget(self, action: #selector(saveButtonClick), for: .touchUpInside)
+    }
+    
+    // MARK: - Actions
+    // MARK: Private
+    @objc private func saveButtonClick() {
+        delegate?.transferMovieDate(datePicker.date)
+        navigationController?.popViewController(animated: true)
     }
 }

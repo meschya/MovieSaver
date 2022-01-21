@@ -2,19 +2,6 @@ import UIKit
 
 final class YouTubeLinkViewController: UIViewController {
     
-    // MARK: - Actions
-    // MARK: Private
-    @objc private func saveButtonClick() {
-        if youTubeLinkField.text != "" && youTubeLinkField.text?.isValidURL == true {
-            let url = URL(string: youTubeLinkField.text!)
-            delegate?.transferMovieYouTube(url!)
-            navigationController?.popViewController(animated: true)
-        } else {
-            showAllert("Add url movie!")
-            youTubeLinkField.text = ""
-        }
-    }
-    
     // MARK: - Properties
     // MARK: Public
     weak var delegate: TransferDataBetweenVCDelegate?
@@ -76,7 +63,7 @@ final class YouTubeLinkViewController: UIViewController {
     
     private func addSetupsUI() {
         addYouTubeLinkLabelUI()
-        addYouTubeLinkFielddUI()
+        addYouTubeLinkFieldUI()
         addSaveButtonUI()
     }
     
@@ -84,19 +71,33 @@ final class YouTubeLinkViewController: UIViewController {
         youTubeLinkLabel.text = "YouTube Link"
         youTubeLinkLabel.textColor = .black
         youTubeLinkLabel.textAlignment = .center
-        youTubeLinkLabel.font = UIFont.systemFont(ofSize: 24, weight: .medium)
+        youTubeLinkLabel.font = .manrope(24, .medium)
     }
     
-    private func addYouTubeLinkFielddUI() {
+    private func addYouTubeLinkFieldUI() {
         youTubeLinkField.placeholder = "URL"
+        youTubeLinkField.keyboardType = .URL
+        youTubeLinkField.delegate = self
     }
     
     private func addSaveButtonUI() {
         saveButton.setTitle("Save", for: .normal)
         saveButton.backgroundColor = .white
         saveButton.setTitleColor(.systemBlue, for: .normal)
-        saveButton.titleLabel?.font = UIFont.systemFont(ofSize: 18, weight: .medium)
+        saveButton.titleLabel?.font = .manrope(18, .medium)
         saveButton.addTarget(self, action: #selector(saveButtonClick), for: .touchUpInside)
+    }
+    
+    // MARK: - Actions
+    // MARK: Private
+    @objc private func saveButtonClick() {
+        if let url = URL(string: youTubeLinkField.text!), url.host != nil {
+            delegate?.transferMovieYouTube(url)
+            navigationController?.popViewController(animated: true)
+        } else {
+            showAllert("Add url movie!")
+            youTubeLinkField.text = .none
+        }
     }
     
     // MARK: - Helpers
@@ -108,10 +109,10 @@ final class YouTubeLinkViewController: UIViewController {
         }))
         present(alert, animated: true, completion: nil)
     }
-    
-    func validateUrl() -> Bool {
-      let urlRegEx = "((\\w)*|([0-9]*)|([-|_])*)+([\\.|/]((\\w)*|([0-9]*)|([-|_])*))+"
-      return NSPredicate(format: "SELF MATCHES %@", urlRegEx).evaluate(with: self)
-    }
+}
 
+extension YouTubeLinkViewController: UITextFieldDelegate {
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        view.endEditing(true)
+    }
 }

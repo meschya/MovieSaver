@@ -3,12 +3,10 @@ import UIKit
 final class MovieInfoTableViewCell: UITableViewCell {
     
     // MARK: - Properties
-    // MARK: Public
-    public var movieImageView: UIImageView = UIImageView()
-    public var nameMovieLabel: UILabel = UILabel()
-    public var ratingMovieLabel: UILabel = UILabel()
-    
     // MARK: Private
+    private var movieImageView: UIImageView = UIImageView()
+    private var nameMovieLabel: UILabel = UILabel()
+    private var ratingMovieLabel: UILabel = UILabel()
     private let mainView: UIView = UIView()
     private let infoMovieStackView: UIStackView = UIStackView()
     private let mainStackView: UIStackView = UIStackView()
@@ -25,11 +23,19 @@ final class MovieInfoTableViewCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
+    // MARK: - API
+    func setInfoMovie(NameMovie name: String, RatingMovie rating: NSAttributedString, ImageMovie image: UIImage) {
+        nameMovieLabel.text = name
+        ratingMovieLabel.attributedText = rating
+        movieImageView.image = image
+    }
+    
     // MARK: - Constraints
     // MARK: Private
     private func addConstraints() {
         addMainViewConstarint()
         addMainStackViewConstraint()
+        addNameMovieLabelConstraint()
     }
     
     private func addMainViewConstarint() {
@@ -48,6 +54,11 @@ final class MovieInfoTableViewCell: UITableViewCell {
         mainStackView.trailingAnchor.constraint(equalTo: mainView.trailingAnchor).isActive = true
     }
     
+    private func addNameMovieLabelConstraint() {
+        nameMovieLabel.translatesAutoresizingMaskIntoConstraints = false
+        nameMovieLabel.heightAnchor.constraint(equalTo: infoMovieStackView.heightAnchor, multiplier: 0.6).isActive = true
+    }
+    
     // MARK: - Setups
     // MARK: Private
     private func addAllSubviews() {
@@ -60,12 +71,17 @@ final class MovieInfoTableViewCell: UITableViewCell {
     }
     
     private func addSetupsUI() {
+        addContentViewUI()
         addMainViewUI()
         addMovieImageViewUI()
         addMainStackViewUI()
         addInfoMovieStackViewUI()
         addNameMovieLabelUI()
         addRatingMovieLabelUI()
+    }
+    
+    private func addContentViewUI() {
+        contentView.backgroundColor = UIColor(red: 0.898, green: 0.898, blue: 0.898, alpha: 1)
     }
     
     private func addMovieImageViewUI() {
@@ -89,20 +105,19 @@ final class MovieInfoTableViewCell: UITableViewCell {
     private func addInfoMovieStackViewUI() {
         infoMovieStackView.axis = .vertical
         infoMovieStackView.alignment = .center
-        infoMovieStackView.distribution = .fillEqually
+        infoMovieStackView.distribution = .fillProportionally
     }
     
     private func addNameMovieLabelUI() {
         nameMovieLabel.textAlignment = .center
         nameMovieLabel.textColor = .black
-        nameMovieLabel.font = UIFont.systemFont(ofSize: 18, weight: .medium)
+        nameMovieLabel.font = .manrope(18, .medium)
         nameMovieLabel.numberOfLines = 3
     }
     
     private func addRatingMovieLabelUI() {
-        ratingMovieLabel.text = "8.9/10"
         ratingMovieLabel.textAlignment = .center
         ratingMovieLabel.textColor = .black
-        ratingMovieLabel.font = UIFont.systemFont(ofSize: 18, weight: .medium)
+        ratingMovieLabel.font = .manrope(18, .medium)
     }
 }

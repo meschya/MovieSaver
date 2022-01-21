@@ -2,18 +2,6 @@ import UIKit
 
 final class FilmNameViewController: UIViewController {
     
-    // MARK: - Actions
-    // MARK: Private
-    @objc private func saveButtonClick() {
-        if fillNameTextField.text != "" {
-            let name = fillNameTextField.text ?? ""
-            delegate?.transferMovieName(name)
-            navigationController?.popViewController(animated: true)
-        } else {
-            showAllert("Fill name movie!")
-        }
-    }
-    
     // MARK: - Properties
     // MARK: Public
     weak var delegate: TransferDataBetweenVCDelegate?
@@ -83,7 +71,7 @@ final class FilmNameViewController: UIViewController {
         fillNameLabel.text = "Fill Name"
         fillNameLabel.textColor = .black
         fillNameLabel.textAlignment = .center
-        fillNameLabel.font = UIFont.systemFont(ofSize: 24, weight: .medium)
+        fillNameLabel.font = .manrope(24, .medium)
     }
     
     private func addFillNameTextFieldUI() {
@@ -94,8 +82,20 @@ final class FilmNameViewController: UIViewController {
         saveButton.setTitle("Save", for: .normal)
         saveButton.backgroundColor = .white
         saveButton.setTitleColor(.systemBlue, for: .normal)
-        saveButton.titleLabel?.font = UIFont.systemFont(ofSize: 18, weight: .medium)
+        saveButton.titleLabel?.font = .manrope(18, .medium)
         saveButton.addTarget(self, action: #selector(saveButtonClick), for: .touchUpInside)
+    }
+    
+    // MARK: - Actions
+    // MARK: Private
+    @objc private func saveButtonClick() {
+        if fillNameTextField.text != "" {
+            let name = fillNameTextField.text ?? ""
+            delegate?.transferMovieName(name)
+            navigationController?.popViewController(animated: true)
+        } else {
+            showAllert("Fill name movie!")
+        }
     }
     
     // MARK: - Helpers
