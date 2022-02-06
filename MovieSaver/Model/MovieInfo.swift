@@ -1,7 +1,6 @@
 import UIKit
 
 struct MovieInfo {
-    
     init() {
         self.name = ""
         self.rating = ""
@@ -10,7 +9,7 @@ struct MovieInfo {
         self.description = ""
         self.imageMovie = UIImage(named: "Rectangle")!
     }
-    
+
     var name: String
     var rating: String
     var releaseDate: String

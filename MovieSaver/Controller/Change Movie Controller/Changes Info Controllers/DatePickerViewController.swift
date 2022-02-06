@@ -1,31 +1,41 @@
 import UIKit
 
 final class DatePickerViewController: UIViewController {
-    
-    // MARK: - Properties
-    // MARK: Public
-    weak var delegate: TransferDataBetweenVCDelegate?    
-    // MARK: Private
-    private let releaseDateLabel: UILabel = UILabel()
-    private let datePicker: UIDatePicker = UIDatePicker()
-    private let saveButton: UIButton = UIButton()
+    // MARK: - Identifier
 
-    //MARK: - LIfecycle
+    static let identifier = "DatePickerViewController"
+
+    // MARK: - Properties
+
+    // MARK: Public
+
+    weak var delegate: TransferDataBetweenVCDelegate?
+
+    // MARK: Private
+
+    private let releaseDateLabel: UILabel = .init()
+    private let datePicker: UIDatePicker = .init()
+    private let saveButton: UIButton = .init()
+
+    // MARK: - LIfecycle
+
     override func viewDidLoad() {
         super.viewDidLoad()
         addSubviews()
         addConstraints()
         addSetupsUI()
     }
-    
+
     // MARK: - Constraints
+
     // MARK: Private
+
     private func addConstraints() {
         addRatingLabelConstraint()
         addDatePickerConstraint()
         addSaveButtonConstraint()
     }
-    
+
     private func addRatingLabelConstraint() {
         releaseDateLabel.translatesAutoresizingMaskIntoConstraints = false
         releaseDateLabel.topAnchor.constraint(equalTo: view.topAnchor, constant: 150).isActive = true
@@ -33,7 +43,7 @@ final class DatePickerViewController: UIViewController {
         releaseDateLabel.heightAnchor.constraint(equalToConstant: 30).isActive = true
         releaseDateLabel.widthAnchor.constraint(equalToConstant: 200).isActive = true
     }
-    
+
     private func addDatePickerConstraint() {
         datePicker.translatesAutoresizingMaskIntoConstraints = false
         datePicker.topAnchor.constraint(equalTo: releaseDateLabel.bottomAnchor, constant: 32).isActive = true
@@ -41,7 +51,7 @@ final class DatePickerViewController: UIViewController {
         datePicker.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
         datePicker.heightAnchor.constraint(equalToConstant: 194).isActive = true
     }
-    
+
     private func addSaveButtonConstraint() {
         saveButton.translatesAutoresizingMaskIntoConstraints = false
         saveButton.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
@@ -49,31 +59,33 @@ final class DatePickerViewController: UIViewController {
         saveButton.heightAnchor.constraint(equalToConstant: 27).isActive = true
         saveButton.widthAnchor.constraint(equalToConstant: 79).isActive = true
     }
-    
+
     // MARK: - Setups
+
     // MARK: Private
+
     private func addSubviews() {
         view.addSubViews(releaseDateLabel, datePicker, saveButton)
     }
-    
+
     private func addSetupsUI() {
         addRatingLabelUI()
         addDatePickerUI()
         addSaveButtonUI()
     }
-    
+
     private func addRatingLabelUI() {
         releaseDateLabel.text = "Release Date"
         releaseDateLabel.textColor = .black
         releaseDateLabel.textAlignment = .center
         releaseDateLabel.font = .manrope(24, .medium)
     }
-    
+
     private func addDatePickerUI() {
         datePicker.preferredDatePickerStyle = .wheels
         datePicker.datePickerMode = .date
     }
-    
+
     private func addSaveButtonUI() {
         saveButton.setTitle("Save", for: .normal)
         saveButton.backgroundColor = .white
@@ -81,9 +93,11 @@ final class DatePickerViewController: UIViewController {
         saveButton.titleLabel?.font = .manrope(18, .medium)
         saveButton.addTarget(self, action: #selector(saveButtonClick), for: .touchUpInside)
     }
-    
+
     // MARK: - Actions
+
     // MARK: Private
+
     @objc private func saveButtonClick() {
         delegate?.transferMovieDate(datePicker.date)
         navigationController?.popViewController(animated: true)
