@@ -7,7 +7,9 @@ final class ViewController: UIViewController, NSFetchedResultsControllerDelegate
     // MARK: Private
 
     private let mainTableView: UITableView = .init()
+    private var searchController: UISearchController = .init()
     private var moviesInfo: [MovieMO] = []
+    private var searchResults: [MovieMO] = []
     private var fetchResultController: NSFetchedResultsController<MovieMO>!
 
     // MARK: - LIfecycle
@@ -16,7 +18,7 @@ final class ViewController: UIViewController, NSFetchedResultsControllerDelegate
         super.viewDidLoad()
         sleep(1)
         addSubViews()
-        addSetupsTableView()
+        addSetups()
         addConstraints()
         addNavigationControllerUI()
         mainTableView.register(MovieInfoTableViewCell.self, forCellReuseIdentifier: MovieInfoTableViewCell.identifier)
@@ -79,11 +81,25 @@ final class ViewController: UIViewController, NSFetchedResultsControllerDelegate
         view.addSubview(mainTableView)
     }
 
+    private func addSetups() {
+        addSetupsTableView()
+        addSetupsSerchController()
+    }
+
     private func addSetupsTableView() {
         mainTableView.delegate = self
         mainTableView.dataSource = self
         mainTableView.separatorStyle = .none
         mainTableView.backgroundColor = UIColor(red: 0.898, green: 0.898, blue: 0.898, alpha: 1)
+    }
+
+    private func addSetupsSerchController() {
+        searchController = UISearchController(searchResultsController: nil)
+        navigationItem.searchController = searchController
+        searchController.searchResultsUpdater = self
+        searchController.dimsBackgroundDuringPresentation = false
+        searchController.searchBar.placeholder = "Search movies..."
+        searchController.searchBar.barTintColor = UIColor(red: 0.898, green: 0.898, blue: 0.898, alpha: 1)
     }
 
     private func addNavigationControllerUI() {
@@ -134,7 +150,11 @@ final class ViewController: UIViewController, NSFetchedResultsControllerDelegate
 
 extension ViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return moviesInfo.count
+        if searchController.isActive {
+            return searchResults.count
+        } else {
+            return moviesInfo.count
+        }
     }
 
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -143,7 +163,7 @@ extension ViewController: UITableViewDelegate, UITableViewDataSource {
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if let cell = mainTableView.dequeueReusableCell(withIdentifier: MovieInfoTableViewCell.identifier, for: indexPath) as? MovieInfoTableViewCell {
-            let movie = moviesInfo[indexPath.row]
+            let movie = (searchController.isActive) ? searchResults[indexPath.row] : moviesInfo[indexPath.row]
             cell.setInfoMovie(
                 NameMovie: movie.name!,
                 RatingMovie: ratingMovieInfo(indexPath),
@@ -211,6 +231,26 @@ extension ViewController: UITableViewDelegate, UITableViewDataSource {
             context.delete(movieDelete)
             appDelegate.saveContext()
             tableView.endUpdates()
+        }
+    }
+}
+
+extension ViewController: UISearchResultsUpdating {
+    func filterContent(for SearchText: String) {
+        searchResults = moviesInfo.filter { movie -> Bool in
+            if let name = movie.name {
+                let isMatch = name.localizedCaseInsensitiveContains(SearchText)
+                return isMatch
+            }
+
+            return false
+        }
+    }
+
+    func updateSearchResults(for searchController: UISearchController) {
+        if let searchText = searchController.searchBar.text {
+            filterContent(for: searchText)
+            mainTableView.reloadData()
         }
     }
 }
