@@ -10,7 +10,7 @@ final class DetailScreenViewController: UIViewController {
 
     // MARK: Public
 
-    public var movieInfo: MovieInfo = .init()
+    public var movieInfo: MovieMO = .init()
 
     // MARK: Private
 
@@ -163,11 +163,11 @@ final class DetailScreenViewController: UIViewController {
     // MARK: Private
 
     private func addInfoMovie() {
-        movieImage.image = movieInfo.imageMovie
+        movieImage.image = (UIImage(data: movieInfo.imageMovie!))!
         nameMovieLabel.text = movieInfo.name
-        descriptionTextView.text = movieInfo.description
+        descriptionTextView.text = movieInfo.descriptin
         addRatingAndYearLabelInfo()
-        trailerWebView.load(URLRequest(url: movieInfo.youtubeLink))
+        trailerWebView.load(URLRequest(url: movieInfo.youtubeLink!))
     }
     
     private func addRatingAndYearLabelInfo() {
@@ -188,9 +188,9 @@ final class DetailScreenViewController: UIViewController {
             NSAttributedString.Key.font: UIFont.manrope(14, .light)
         ]
 
-        let firstString = NSMutableAttributedString(string: "  \(movieInfo.rating)", attributes: firstAttributes)
+        let firstString = NSMutableAttributedString(string: "  \(movieInfo.rating!)", attributes: firstAttributes)
         let secondString = NSAttributedString(string: "/10", attributes: secondAttributes)
-        let thirdString = NSAttributedString(string: " \(movieInfo.releaseDate)", attributes: thirdAttributes)
+        let thirdString = NSAttributedString(string: " \(movieInfo.releaseDate!)", attributes: thirdAttributes)
         attachmentString.append(firstString)
         attachmentString.append(secondString)
         attachmentString.append(thirdString)

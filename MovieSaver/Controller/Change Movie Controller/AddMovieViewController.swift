@@ -1,4 +1,5 @@
 import UIKit
+import CoreData
 
 final class AddMovieViewController: UIViewController {
     // MARK: - Identifier
@@ -13,7 +14,7 @@ final class AddMovieViewController: UIViewController {
 
     // MARK: Private
 
-    private var movieInfo: MovieInfo = .init()
+    private var movieInfo: MovieMO = .init()
     private var pickedImage: UIImage?
     private let movieImageView: UIImageView = .init()
     private let scrollView: UIScrollView = .init()
@@ -389,13 +390,17 @@ final class AddMovieViewController: UIViewController {
 
     @objc private func saveButtonClick() {
         if isCheckFieldsForEmpty() == true {
-            movieInfo.name = mainNameLabel.text!
-            movieInfo.rating = mainRatingLabel.text!
-            movieInfo.releaseDate = mainDateLabel.text!
-            movieInfo.youtubeLink = URL(string: mainYoutubeLabel.text!)!
-            movieInfo.description = descriptionTextView.text!
-            movieInfo.imageMovie = pickedImage!
-            delegate?.transferMovieInfo(movieInfo)
+            if let appDelegate = (UIApplication.shared.delegate as? AppDelegate) {
+                movieInfo = MovieMO(context: appDelegate.persistentContainer.viewContext)
+                movieInfo.name = mainNameLabel.text
+                movieInfo.rating = mainRatingLabel.text
+                movieInfo.releaseDate = mainDateLabel.text
+                movieInfo.descriptin = descriptionTextView.text
+                movieInfo.youtubeLink = URL(string: mainYoutubeLabel.text!)!
+                movieInfo.imageMovie = pickedImage?.pngData()
+                appDelegate.saveContext()
+                delegate?.transferMovieInfo()
+            }
             navigationController?.popViewController(animated: true)
         } else {
             showAllert("Fill in all fields")
