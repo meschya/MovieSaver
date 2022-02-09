@@ -50,7 +50,6 @@ final class AddMovieViewController: UIViewController {
         addSubviews()
         addConstraints()
         addSetupsUI()
-        checkError()
     }
 
     override func viewDidLayoutSubviews() {
@@ -220,6 +219,7 @@ final class AddMovieViewController: UIViewController {
         let tap = UITapGestureRecognizer(target: self, action: #selector(imagePickerBtnAction))
         movieImageView.isUserInteractionEnabled = true
         movieImageView.addGestureRecognizer(tap)
+        movieImageView.contentMode = .scaleAspectFill
     }
 
     private func addInfoViewUI() {
