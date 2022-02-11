@@ -1,5 +1,5 @@
-import UIKit
 import CoreData
+import UIKit
 
 final class AddMovieViewController: UIViewController {
     // MARK: - Identifier
@@ -7,10 +7,6 @@ final class AddMovieViewController: UIViewController {
     static let identifier = "AddMovieViewController"
 
     // MARK: - Properties
-
-    // MARK: Public
-
-    weak var delegate: TransferMovieBetweenVCDelegate?
 
     // MARK: Private
 
@@ -57,6 +53,21 @@ final class AddMovieViewController: UIViewController {
         super.viewDidLayoutSubviews()
         movieImageView.layer.cornerRadius = movieImageView.frame.size.width / 2
         movieImageView.clipsToBounds = true
+    }
+
+    // MARK: - Data
+
+    private func saveMovie(_ name: String, _ rating: String, _ releaseDate: String, _ description: String, _ youtubeLink: String, _ image: UIImage) {
+        if let appDelegate = (UIApplication.shared.delegate as? AppDelegate) {
+            movieInfo = MovieMO(context: appDelegate.persistentContainer.viewContext)
+            movieInfo.name = name
+            movieInfo.rating = rating
+            movieInfo.releaseDate = releaseDate
+            movieInfo.descriptin = description
+            movieInfo.youtubeLink = URL(string: youtubeLink)!
+            movieInfo.imageMovie = image.pngData()
+            appDelegate.saveContext()
+        }
     }
 
     // MARK: - Constraints
@@ -390,17 +401,12 @@ final class AddMovieViewController: UIViewController {
 
     @objc private func saveButtonClick() {
         if isCheckFieldsForEmpty() == true {
-            if let appDelegate = (UIApplication.shared.delegate as? AppDelegate) {
-                movieInfo = MovieMO(context: appDelegate.persistentContainer.viewContext)
-                movieInfo.name = mainNameLabel.text
-                movieInfo.rating = mainRatingLabel.text
-                movieInfo.releaseDate = mainDateLabel.text
-                movieInfo.descriptin = descriptionTextView.text
-                movieInfo.youtubeLink = URL(string: mainYoutubeLabel.text!)!
-                movieInfo.imageMovie = pickedImage?.pngData()
-                appDelegate.saveContext()
-                delegate?.transferMovieInfo()
-            }
+            saveMovie(mainNameLabel.text!,
+                      mainRatingLabel.text!,
+                      mainDateLabel.text!,
+                      descriptionTextView.text!,
+                      mainYoutubeLabel.text!,
+                      pickedImage!)
             navigationController?.popViewController(animated: true)
         } else {
             showAllert("Fill in all fields")
@@ -463,53 +469,11 @@ final class AddMovieViewController: UIViewController {
            mainRatingLabel.text != "-",
            mainYoutubeLabel.text != "-",
            pickedImage != nil,
-           descriptionTextView.textColor != UIColor.lightGray {
+           descriptionTextView.textColor != UIColor.lightGray
+        {
             return true
         } else {
             return false
-        }
-    }
-
-    // MARK: - Field processing
-
-    func checkFieldForNil() throws {
-        if mainNameLabel.text == "-" {
-            throw EmptinessError.equalNilName
-        }
-        if mainDateLabel.text == "-" {
-            throw EmptinessError.equalNilDate
-        }
-        if mainRatingLabel.text == "-" {
-            throw EmptinessError.equalNilRating
-        }
-        if mainYoutubeLabel.text == "-" {
-            throw EmptinessError.equalNilYouTube
-        }
-        if descriptionTextView.textColor != UIColor.lightGray {
-            throw EmptinessError.equalNilDescr
-        }
-        if pickedImage == nil {
-            throw EmptinessError.equalNilImg
-        }
-    }
-
-    private func checkError() {
-        do {
-            try checkFieldForNil()
-        } catch EmptinessError.equalNilName {
-            showAllert("ERROR: Entered Name equal.")
-        } catch EmptinessError.equalNilDate {
-            showAllert("ERROR: Entered Date equal.")
-        } catch EmptinessError.equalNilRating {
-            showAllert("ERROR: Entered Rating equal.")
-        } catch EmptinessError.equalNilYouTube {
-            showAllert("ERROR: Entered YouTube equal.")
-        } catch EmptinessError.equalNilDescr {
-            showAllert("ERROR: Entered Description equal.")
-        } catch EmptinessError.equalNilImg {
-            showAllert("ERROR: Entered Img equal.")
-        } catch {
-            showAllert("Unexpected error.")
         }
     }
 }

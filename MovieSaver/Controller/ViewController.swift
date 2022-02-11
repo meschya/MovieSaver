@@ -16,18 +16,12 @@ final class ViewController: UIViewController, NSFetchedResultsControllerDelegate
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        sleep(1)
         addSubViews()
         addSetups()
         addConstraints()
         addNavigationControllerUI()
         mainTableView.register(MovieInfoTableViewCell.self, forCellReuseIdentifier: MovieInfoTableViewCell.identifier)
         coreDataSetups()
-    }
-
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        mainTableView.reloadData()
     }
 
     // MARK: - CoreData
@@ -97,7 +91,6 @@ final class ViewController: UIViewController, NSFetchedResultsControllerDelegate
         searchController = UISearchController(searchResultsController: nil)
         navigationItem.searchController = searchController
         searchController.searchResultsUpdater = self
-        searchController.dimsBackgroundDuringPresentation = false
         searchController.searchBar.placeholder = "Search movies..."
         searchController.searchBar.barTintColor = UIColor(red: 0.898, green: 0.898, blue: 0.898, alpha: 1)
     }
@@ -238,9 +231,8 @@ extension ViewController: UITableViewDelegate, UITableViewDataSource {
 extension ViewController: UISearchResultsUpdating {
     func filterContent(for SearchText: String) {
         searchResults = moviesInfo.filter { movie -> Bool in
-            if let name = movie.name {
-                let isMatch = name.localizedCaseInsensitiveContains(SearchText)
-                return isMatch
+            if let name = movie.name?.lowercased() {
+                return name.hasPrefix(SearchText.lowercased())
             }
 
             return false
