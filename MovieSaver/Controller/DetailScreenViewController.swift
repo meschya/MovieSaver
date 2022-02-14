@@ -2,21 +2,29 @@ import UIKit
 import WebKit
 
 final class DetailScreenViewController: UIViewController {
-    
+    // MARK: - Identifier
+
+    static let identifier = "DetailScreenViewController"
+
     // MARK: - Properties
+
     // MARK: Public
-    public var movieInfo: MovieInfo = MovieInfo()
+
+    public var movieInfo: MovieMO = .init()
+
     // MARK: Private
-    private let scrollView: UIScrollView = UIScrollView()
-    private let viewForScrollView: UIView = UIView()
-    private let movieImage: UIImageView = UIImageView()
-    private let mainView: UIView = UIView()
-    private let nameMovieLabel: UILabel = UILabel()
-    private let ratingAndYearLabel: UILabel = UILabel()
-    private let descriptionTextView: UITextView = UITextView()
-    private let trailerWebView: WKWebView = WKWebView()
-    
-    //MARK: - LIfecycle
+
+    private let scrollView: UIScrollView = .init()
+    private let viewForScrollView: UIView = .init()
+    private let movieImage: UIImageView = .init()
+    private let mainView: UIView = .init()
+    private let nameMovieLabel: UILabel = .init()
+    private let ratingAndYearLabel: UILabel = .init()
+    private let descriptionTextView: UITextView = .init()
+    private let trailerWebView: WKWebView = .init()
+
+    // MARK: - LIfecycle
+
     override func viewDidLoad() {
         super.viewDidLoad()
         addSubviews()
@@ -24,9 +32,11 @@ final class DetailScreenViewController: UIViewController {
         addSetupsUI()
         addInfoMovie()
     }
-    
+
     // MARK: - Constraints
+
     // MARK: Private
+
     private func addConstraints() {
         addMovieImageConstraint()
         addMainViewConstraint()
@@ -105,7 +115,9 @@ final class DetailScreenViewController: UIViewController {
     }
     
     // MARK: - Setups
+
     // MARK: Private
+
     private func addSubviews() {
         view.addSubViews(movieImage, mainView)
         mainView.addSubview(scrollView)
@@ -147,13 +159,15 @@ final class DetailScreenViewController: UIViewController {
     }
     
     // MARK: - Helpers
+
     // MARK: Private
+
     private func addInfoMovie() {
-        movieImage.image = movieInfo.imageMovie
+        movieImage.image = (UIImage(data: movieInfo.imageMovie!))!
         nameMovieLabel.text = movieInfo.name
-        descriptionTextView.text = movieInfo.description
+        descriptionTextView.text = movieInfo.descriptin
         addRatingAndYearLabelInfo()
-        trailerWebView.load(URLRequest(url: movieInfo.youtubeLink))
+        trailerWebView.load(URLRequest(url: movieInfo.youtubeLink!))
     }
     
     private func addRatingAndYearLabelInfo() {
@@ -161,13 +175,22 @@ final class DetailScreenViewController: UIViewController {
         attachment.image = UIImage(named: "Star.png")
         let attachmentString = NSMutableAttributedString(attachment: attachment)
         
-        let firstAttributes: [NSAttributedString.Key: Any] = [NSAttributedString.Key.foregroundColor: UIColor.black, NSAttributedString.Key.font: UIFont.manrope(14, .bold)]
-        let secondAttributes = [NSAttributedString.Key.foregroundColor: UIColor.black, NSAttributedString.Key.font: UIFont.systemFont(ofSize: 14, weight: .light)]
-        let thirdAttributes = [NSAttributedString.Key.foregroundColor: UIColor(red: 0.592, green: 0.592, blue: 0.592, alpha: 1), NSAttributedString.Key.font: UIFont.manrope(14, .light)]
+        let firstAttributes: [NSAttributedString.Key: Any] = [
+            NSAttributedString.Key.foregroundColor: UIColor.black,
+            NSAttributedString.Key.font: UIFont.manrope(14, .bold)
+        ]
+        let secondAttributes = [
+            NSAttributedString.Key.foregroundColor: UIColor.black,
+            NSAttributedString.Key.font: UIFont.systemFont(ofSize: 14, weight: .light)
+        ]
+        let thirdAttributes = [
+            NSAttributedString.Key.foregroundColor: UIColor(red: 0.592, green: 0.592, blue: 0.592, alpha: 1),
+            NSAttributedString.Key.font: UIFont.manrope(14, .light)
+        ]
 
-        let firstString = NSMutableAttributedString(string: "  \(movieInfo.rating)", attributes: firstAttributes)
+        let firstString = NSMutableAttributedString(string: "  \(movieInfo.rating!)", attributes: firstAttributes)
         let secondString = NSAttributedString(string: "/10", attributes: secondAttributes)
-        let thirdString = NSAttributedString(string: " \(movieInfo.releaseDate)", attributes: thirdAttributes)
+        let thirdString = NSAttributedString(string: " \(movieInfo.releaseDate!)", attributes: thirdAttributes)
         attachmentString.append(firstString)
         attachmentString.append(secondString)
         attachmentString.append(thirdString)

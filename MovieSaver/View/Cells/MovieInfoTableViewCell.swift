@@ -1,17 +1,23 @@
 import UIKit
 
 final class MovieInfoTableViewCell: UITableViewCell {
-    
+    // MARK: - Identifier
+
+    static let identifier = "MovieInfoTableViewCell"
+
     // MARK: - Properties
+
     // MARK: Private
-    private var movieImageView: UIImageView = UIImageView()
-    private var nameMovieLabel: UILabel = UILabel()
-    private var ratingMovieLabel: UILabel = UILabel()
-    private let mainView: UIView = UIView()
-    private let infoMovieStackView: UIStackView = UIStackView()
-    private let mainStackView: UIStackView = UIStackView()
+
+    private var movieImageView: UIImageView = .init()
+    private var nameMovieLabel: UILabel = .init()
+    private var ratingMovieLabel: UILabel = .init()
+    private let mainView: UIView = .init()
+    private let infoMovieStackView: UIStackView = .init()
+    private let mainStackView: UIStackView = .init()
     
-    //MARK: - LIfecycle
+    // MARK: - LIfecycle
+
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         addAllSubviews()
@@ -19,11 +25,13 @@ final class MovieInfoTableViewCell: UITableViewCell {
         addSetupsUI()
     }
     
+    @available(*, unavailable)
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
     // MARK: - API
+
     func setInfoMovie(NameMovie name: String, RatingMovie rating: NSAttributedString, ImageMovie image: UIImage) {
         nameMovieLabel.text = name
         ratingMovieLabel.attributedText = rating
@@ -31,7 +39,9 @@ final class MovieInfoTableViewCell: UITableViewCell {
     }
     
     // MARK: - Constraints
+
     // MARK: Private
+
     private func addConstraints() {
         addMainViewConstarint()
         addMainStackViewConstraint()
@@ -60,7 +70,9 @@ final class MovieInfoTableViewCell: UITableViewCell {
     }
     
     // MARK: - Setups
+
     // MARK: Private
+
     private func addAllSubviews() {
         contentView.addSubview(mainView)
         mainView.addSubview(mainStackView)
@@ -87,6 +99,7 @@ final class MovieInfoTableViewCell: UITableViewCell {
     private func addMovieImageViewUI() {
         movieImageView.layer.cornerRadius = 10
         movieImageView.clipsToBounds = true
+        movieImageView.contentMode = .scaleAspectFill
     }
     
     private func addMainViewUI() {

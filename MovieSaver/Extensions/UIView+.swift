@@ -4,7 +4,7 @@ extension UIView {
     func addSubViews(_ views: UIView...) {
         views.forEach(addSubview)
     }
-    
+
     func addShadow() {
         self.layer.shadowOpacity = 1
         self.layer.shadowRadius = 16
